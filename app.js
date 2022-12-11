@@ -38,14 +38,14 @@ app
       async (error, response, body) => {
         res.json(body);
         await data.create({ allData: body });
+        await fs.writeFile("weather.txt", body, function (err) {
+          if (err) return console.log(err);
+        });
       }
     );
   })
   .get("/weather/file", async (req, res) => {
     const all_data = (await data.findOne().sort("-_id")).allData;
-    await fs.writeFile("weather.txt", all_data, function (err) {
-      if (err) return console.log(err);
-    });
     await res.download("./weather.txt");
   });
 app.listen(3000, () => {
