@@ -17,7 +17,6 @@ mongoose
   .then(() => console.log("Connected!"));
 
 const weather = require("./model/weather");
-const data = require("./model/data");
 
 fs = require("fs");
 
@@ -32,7 +31,7 @@ app
       `https://api.openweathermap.org/data/2.5/weather?q=${city_name}&appid=${API_key}`,
       async (error, response, body) => {
         res.json(body);
-        await data.create({ allData: body });
+
         await fs.writeFile("weather.txt", body, function (err) {
           if (err) return console.log(err);
         });
