@@ -20,15 +20,10 @@ const weather = require("./model/weather");
 const data = require("./model/data");
 
 fs = require("fs");
-/* async function findCity() {
-  const lastCity = (await weather.findOne().sort("-_id")).city;
-}
-const city_name = findCity().lastCity;
-console.log(city_name); */
 
 app
-  .post("/city", (req, res) => {
-    weather.create(req.body);
+  .post("/city", async (req, res) => {
+    await weather.create(req.body);
     res.send("city is added");
   })
   .get("/weather", async (req, res) => {
@@ -43,9 +38,9 @@ app
         });
       }
     );
+    await weather.remove({});
   })
   .get("/weather/file", async (req, res) => {
-    const all_data = (await data.findOne().sort("-_id")).allData;
     await res.download("./weather.txt");
   });
 app.listen(3000, () => {
